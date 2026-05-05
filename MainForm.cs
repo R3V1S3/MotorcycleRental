@@ -1,7 +1,8 @@
-﻿using System;
-using System.Windows.Forms;
-using System.Configuration;
+﻿using MotorcycleRental;
 using Npgsql;
+using System;
+using System.Configuration;
+using System.Windows.Forms;
 
 namespace MotorcycleRental
 {
@@ -50,8 +51,7 @@ namespace MotorcycleRental
 
         private void tsmiClients_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Раздел 'Клиенты' будет реализован следующим шагом",
-                "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            new ClientsForm().ShowDialog();
         }
 
         private void tsmiVehicles_Click(object sender, EventArgs e)
@@ -74,27 +74,17 @@ namespace MotorcycleRental
 
         private void tsmiRentals_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Раздел 'Аренда (1:М)' будет реализован позже",
-                "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            new RentalsForm().ShowDialog();
         }
 
-        private void tsmiReportRevenue_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Отчёт 'Выручка' будет реализован позже",
-                "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
+        private void tsmiReportRevenue_Click(object sender, EventArgs e) =>
+            new ReportRevenueForm().ShowDialog();
 
-        private void tsmiReportOverdue_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Отчёт 'Просрочки' будет реализован позже",
-                "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
+        private void tsmiReportOverdue_Click(object sender, EventArgs e) =>
+            new ReportClientsForm().ShowDialog(); // Используем форму клиентов как отчет по просрочкам/статистике
 
-        private void tsmiReportEmployees_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Отчёт 'Сотрудники' будет реализован позже",
-                "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
+        private void tsmiReportEmployees_Click(object sender, EventArgs e) =>
+            new ReportEmployeesForm().ShowDialog();
 
         private void tsmiExit_Click(object sender, EventArgs e)
         {
