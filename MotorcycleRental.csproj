@@ -81,6 +81,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CategoriesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CategoriesForm.Designer.cs">
+      <DependentUpon>CategoriesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CategoryEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CategoryEditForm.Designer.cs">
+      <DependentUpon>CategoryEditForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ClientEditForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,6 +104,18 @@
     </Compile>
     <Compile Include="ClientsForm.Designer.cs">
       <DependentUpon>ClientsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmployeeEditForm.Designer.cs">
+      <DependentUpon>EmployeeEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmployeesForm.Designer.cs">
+      <DependentUpon>EmployeesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -131,8 +155,38 @@
     <Compile Include="ReportRevenueForm.Designer.cs">
       <DependentUpon>ReportRevenueForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ReportsMenuForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReportsMenuForm.Designer.cs">
+      <DependentUpon>ReportsMenuForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VehicleEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VehicleEditForm.Designer.cs">
+      <DependentUpon>VehicleEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VehiclesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VehiclesForm.Designer.cs">
+      <DependentUpon>VehiclesForm.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="CategoriesForm.resx">
+      <DependentUpon>CategoriesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CategoryEditForm.resx">
+      <DependentUpon>CategoryEditForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ClientsForm.resx">
       <DependentUpon>ClientsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmployeeEditForm.resx">
+      <DependentUpon>EmployeeEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmployeesForm.resx">
+      <DependentUpon>EmployeesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -151,6 +205,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RentalsForm.resx">
       <DependentUpon>RentalsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReportsMenuForm.resx">
+      <DependentUpon>ReportsMenuForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VehicleEditForm.resx">
+      <DependentUpon>VehicleEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VehiclesForm.resx">
+      <DependentUpon>VehiclesForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="App.config.example" />
     <None Include="packages.config" />

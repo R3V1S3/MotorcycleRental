@@ -13,6 +13,7 @@ namespace MotorcycleRental
         public ReportRevenueForm()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterParent;
             // Установим даты по умолчанию (текущий месяц)
             dtpStart.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             dtpEnd.Value = DateTime.Now;

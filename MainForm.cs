@@ -47,48 +47,39 @@ namespace MotorcycleRental
             }
         }
 
-        // --- Все обработчики меню пока выводят заглушки ---
-
-        private void tsmiClients_Click(object sender, EventArgs e)
+        private void btnClients_Click(object sender, EventArgs e)
         {
             new ClientsForm().ShowDialog();
         }
 
-        private void tsmiVehicles_Click(object sender, EventArgs e)
+        private void btnVehicles_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Раздел 'Техника' будет реализован позже",
-                "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            new VehiclesForm().ShowDialog();
         }
 
-        private void tsmiCategories_Click(object sender, EventArgs e)
+        private void btnCategories_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Раздел 'Категории' будет реализован позже",
-                "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            new CategoriesForm().ShowDialog();
         }
 
-        private void tsmiEmployees_Click(object sender, EventArgs e)
+        private void btnEmployees_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Раздел 'Сотрудники' будет реализован позже",
-                "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            new EmployeesForm().ShowDialog();
         }
 
-        private void tsmiRentals_Click(object sender, EventArgs e)
+        private void btnRentals_Click(object sender, EventArgs e)
         {
             new RentalsForm().ShowDialog();
         }
 
-        private void tsmiReportRevenue_Click(object sender, EventArgs e) =>
-            new ReportRevenueForm().ShowDialog();
-
-        private void tsmiReportOverdue_Click(object sender, EventArgs e) =>
-            new ReportClientsForm().ShowDialog(); // Используем форму клиентов как отчет по просрочкам/статистике
-
-        private void tsmiReportEmployees_Click(object sender, EventArgs e) =>
-            new ReportEmployeesForm().ShowDialog();
-
-        private void tsmiExit_Click(object sender, EventArgs e)
+        private void btnReports_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            // Открываем форму с выбором отчета или сразу первый отчет
+            using (var form = new ReportsMenuForm())
+            {
+                form.ShowDialog();
+            }
         }
+
     }
 }

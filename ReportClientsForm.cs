@@ -13,6 +13,7 @@ namespace MotorcycleRental
         public ReportClientsForm()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterParent;
             dtpStart.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             dtpEnd.Value = DateTime.Now;
         }

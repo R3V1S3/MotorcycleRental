@@ -62,24 +62,31 @@ namespace MotorcycleRental // ✅ Исправлено на общий namespace
             string columnName = dgvClients.Columns[e.ColumnIndex].DataPropertyName;
             if (string.IsNullOrEmpty(columnName)) return;
 
+            // Получаем реальное имя поля в БД
+            string dbColumnName = GetSortDbFieldName(columnName);
+            if (string.IsNullOrEmpty(dbColumnName)) return;
+
+            // Определяем направление сортировки
             string direction = "ASC";
-            if (dgvClients.Tag?.ToString() == columnName + "_ASC")
+            if (dgvClients.Tag?.ToString() == dbColumnName + "_ASC")
             {
                 direction = "DESC";
-                dgvClients.Tag = columnName + "_DESC";
+                dgvClients.Tag = dbColumnName + "_DESC";
             }
             else
             {
-                dgvClients.Tag = columnName + "_ASC";
+                dgvClients.Tag = dbColumnName + "_ASC";
             }
 
-            SortData(columnName, direction);
+            // Перезагружаем данные с сортировкой
+            SortData(dbColumnName, direction);
         }
 
         private void SortData(string columnName, string direction)
         {
             try
             {
+                // columnName уже содержит правильное имя поля БД (ClientID, FullName и т.д.)
                 string query = $"SELECT ClientID AS \"ID\", FullName AS \"ФИО\", Phone AS \"Телефон\", " +
                               "PassportSeries AS \"Серия паспорта\", PassportNumber AS \"Номер паспорта\", " +
                               $"Address AS \"Адрес\" FROM Clients ORDER BY {columnName} {direction}";
@@ -146,6 +153,23 @@ namespace MotorcycleRental // ✅ Исправлено на общий namespace
                 case "Номер паспорта": return "PassportNumber";
                 case "Адрес": return "Address";
                 default: return "FullName";
+            }
+        }
+
+        /// <summary>
+        /// Получение имени поля в БД для сортировки по отображаемому имени
+        /// </summary>
+        private string GetSortDbFieldName(string displayName)
+        {
+            switch (displayName)
+            {
+                case "ID": return "ClientID";
+                case "ФИО": return "FullName";
+                case "Телефон": return "Phone";
+                case "Серия паспорта": return "PassportSeries";
+                case "Номер паспорта": return "PassportNumber";
+                case "Адрес": return "Address";
+                default: return null; // Неизвестное поле
             }
         }
 

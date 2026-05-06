@@ -15,6 +15,7 @@ namespace MotorcycleRental
         {
             InitializeComponent();
             LoadData();
+            SetupDataGridView();
         }
 
         private void LoadData()
@@ -46,6 +47,13 @@ namespace MotorcycleRental
             {
                 MessageBox.Show($"Ошибка загрузки: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void SetupDataGridView()
+        {
+            dgvRentals.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvRentals.MultiSelect = false;
+            dgvRentals.ReadOnly = true;
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -97,13 +105,15 @@ namespace MotorcycleRental
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            if (dgvRentals.SelectedRows.Count == 0)
+            // Исправленная проверка
+            if (dgvRentals.CurrentRow == null)
             {
-                MessageBox.Show("Выберите аренду", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Выберите аренду", "Внимание",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            int rentalId = Convert.ToInt32(dgvRentals.SelectedRows[0].Cells["RentalID"].Value);
+            int rentalId = Convert.ToInt32(dgvRentals.CurrentRow.Cells["RentalID"].Value);
 
             using (var form = new RentalEditForm())
             {

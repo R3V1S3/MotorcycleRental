@@ -104,7 +104,7 @@
             this.dgvReport.Size = new System.Drawing.Size(800, 370);
             this.dgvReport.TabIndex = 1;
             // 
-            // ReportRevenueForm
+            // ReportEmployeesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;

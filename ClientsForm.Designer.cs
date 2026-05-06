@@ -48,7 +48,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 400);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(984, 60);
+            this.panel1.Size = new System.Drawing.Size(689, 60);
             this.panel1.TabIndex = 0;
             // 
             // lblRecordCount
@@ -113,7 +113,7 @@
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(897, 18);
+            this.btnClose.Location = new System.Drawing.Point(503, 17);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 0;
@@ -131,7 +131,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(984, 60);
+            this.panel2.Size = new System.Drawing.Size(689, 60);
             this.panel2.TabIndex = 1;
             // 
             // btnResetSearch
@@ -194,7 +194,7 @@
             this.dgvClients.Location = new System.Drawing.Point(0, 60);
             this.dgvClients.Name = "dgvClients";
             this.dgvClients.ReadOnly = true;
-            this.dgvClients.Size = new System.Drawing.Size(984, 340);
+            this.dgvClients.Size = new System.Drawing.Size(689, 340);
             this.dgvClients.TabIndex = 2;
             this.dgvClients.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvClients_ColumnHeaderMouseClick);
             // 
@@ -202,7 +202,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 460);
+            this.ClientSize = new System.Drawing.Size(689, 460);
             this.Controls.Add(this.dgvClients);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
