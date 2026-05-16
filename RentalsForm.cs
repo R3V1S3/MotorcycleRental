@@ -22,7 +22,6 @@ namespace MotorcycleRental
         {
             try
             {
-                // Используем представление или JOIN для получения полной информации
                 string query = @"SELECT r.RentalID, c.FullName AS ""ClientName"", 
                                 e.FullName AS ""EmployeeName"", r.StartDate, r.PlannedEndDate, 
                                 r.Status, r.TotalCost 
@@ -38,7 +37,6 @@ namespace MotorcycleRental
                     adapter.Fill(dt);
                     dgvRentals.DataSource = dt;
 
-                    // Скрытие ID если нужно, или форматирование
                     if (dgvRentals.Columns.Contains("RentalID"))
                         dgvRentals.Columns["RentalID"].HeaderText = "ID";
                 }
@@ -105,7 +103,6 @@ namespace MotorcycleRental
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            // Исправленная проверка
             if (dgvRentals.CurrentRow == null)
             {
                 MessageBox.Show("Выберите аренду", "Внимание",
@@ -140,8 +137,6 @@ namespace MotorcycleRental
                 using (var conn = new NpgsqlConnection(_connectionString))
                 {
                     conn.Open();
-                    // Удаляем договор. Благодаря ON DELETE CASCADE в RentalItems, позиции удалятся сами.
-                    // Триггер trg_UpdateVehicleStatus автоматически вернет статусы техники.
                     string query = "DELETE FROM Rentals WHERE RentalID = @id";
                     using (var cmd = new NpgsqlCommand(query, conn))
                     {

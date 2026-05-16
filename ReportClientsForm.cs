@@ -43,7 +43,6 @@ namespace MotorcycleRental
                     adapter.Fill(dt);
                     dgvReport.DataSource = dt;
 
-                    // Итого
                     decimal totalSpent = 0;
                     foreach (DataRow row in dt.Rows)
                     {

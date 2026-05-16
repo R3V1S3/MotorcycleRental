@@ -14,7 +14,6 @@ namespace MotorcycleRental
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterParent;
-            // Установим даты по умолчанию (текущий месяц)
             dtpStart.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             dtpEnd.Value = DateTime.Now;
         }
@@ -45,7 +44,6 @@ namespace MotorcycleRental
                     adapter.Fill(dt);
                     dgvReport.DataSource = dt;
 
-                    // Расчет итогов
                     decimal totalRevenue = 0;
                     foreach (DataRow row in dt.Rows)
                     {

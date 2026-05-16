@@ -15,7 +15,6 @@ namespace MotorcycleRental
         public bool IsEditMode { get; set; }
         public int RentalID { get; set; }
 
-        // Временная таблица для хранения позиций перед сохранением в БД
         private DataTable _itemsTable;
 
         public RentalEditForm()
@@ -33,11 +32,10 @@ namespace MotorcycleRental
             }
             else
             {
-                // По умолчанию сегодня и завтра
                 dtpStartDate.Value = DateTime.Now.Date;
                 dtpEndDate.Value = DateTime.Now.AddDays(1).Date;
 
-                // Создаем пустую таблицу для позиций
+                cmbStatus.SelectedItem = "Активен";
                 CreateNewItemsTable();
             }
         }
@@ -56,7 +54,6 @@ namespace MotorcycleRental
 
         private void LoadComboBoxes()
         {
-            // Загрузка клиентов
             using (var conn = new NpgsqlConnection(_connectionString))
             {
                 conn.Open();
@@ -70,7 +67,6 @@ namespace MotorcycleRental
                     }
                 }
 
-                // Загрузка сотрудников
                 string qEmp = "SELECT EmployeeID, FullName FROM Employees ORDER BY FullName";
                 using (var cmd = new NpgsqlCommand(qEmp, conn))
                 using (var reader = cmd.ExecuteReader())
@@ -81,7 +77,6 @@ namespace MotorcycleRental
                     }
                 }
 
-                // Загрузка свободной техники для выбора
                 string qVehicles = @"SELECT v.VehicleID, v.Model || ' (' || v.PlateNumber || ')' as Info, c.BasePricePerHour 
                                      FROM Vehicles v 
                                      JOIN VehicleCategories c ON v.CategoryID = c.CategoryID 
@@ -92,10 +87,6 @@ namespace MotorcycleRental
                 {
                     while (reader.Read())
                     {
-                        // Сохраняем цену в Tag комбобокса элемента, но проще использовать отдельный класс
-                        // Для простоты здесь используем глобальный список или словарь, но сделаем проще:
-                        // Мы будем выбирать из DataGridView или отдельного диалога. 
-                        // Упрощение: Заполним cboFreeVehicles
                         cboFreeVehicles.Items.Add(new VehicleItem(reader.GetInt32(0), reader.GetString(1), reader.GetDecimal(2)));
                     }
                 }
@@ -107,7 +98,6 @@ namespace MotorcycleRental
 
         private void LoadExistingRental()
         {
-            // Загрузка данных заголовка
             string qHeader = "SELECT ClientID, EmployeeID, StartDate, PlannedEndDate, Status FROM Rentals WHERE RentalID = @id";
 
             using (var conn = new NpgsqlConnection(_connectionString))
@@ -129,7 +119,6 @@ namespace MotorcycleRental
                     }
                 }
 
-                // Загрузка позиций
                 string qItems = @"SELECT ri.VehicleID, v.Model, c.BasePricePerHour, ri.HoursCount 
                                   FROM RentalItems ri 
                                   JOIN Vehicles v ON ri.VehicleID = v.VehicleID 
@@ -184,18 +173,13 @@ namespace MotorcycleRental
                 return;
             }
 
-            // Добавляем строку в локальную таблицу
             DataRow row = _itemsTable.NewRow();
             row["VehicleID"] = vehicle.Id;
             row["Model"] = vehicle.Info;
             row["PricePerHour"] = vehicle.Price;
             row["Hours"] = hours;
-            // Total вычисляется автоматически выражением колонки
 
             _itemsTable.Rows.Add(row);
-
-            // Убираем добавленную технику из списка, чтобы не добавить дважды (опционально)
-            // cboFreeVehicles.Items.Remove(vehicle); 
         }
 
         private void btnRemoveItem_Click(object sender, EventArgs e)
@@ -226,9 +210,10 @@ namespace MotorcycleRental
                     {
                         int newRentalId = 0;
 
-                        // 1. Сохраняем заголовок (Rentals)
                         string qInsRent = @"INSERT INTO Rentals (ClientID, EmployeeID, StartDate, PlannedEndDate, Status) 
                                             VALUES (@cid, @eid, @start, @end, @status) RETURNING RentalID";
+
+                        string status = cmbStatus.SelectedItem?.ToString() ?? "Активен";
 
                         using (var cmd = new NpgsqlCommand(qInsRent, conn, trans))
                         {
@@ -236,12 +221,11 @@ namespace MotorcycleRental
                             cmd.Parameters.AddWithValue("@eid", emp.Id);
                             cmd.Parameters.AddWithValue("@start", dtpStartDate.Value);
                             cmd.Parameters.AddWithValue("@end", dtpEndDate.Value);
-                            cmd.Parameters.AddWithValue("@status", "Активен"); // Всегда активно при создании
+                            cmd.Parameters.AddWithValue("@status", status);
 
                             newRentalId = Convert.ToInt32(cmd.ExecuteScalar());
                         }
 
-                        // 2. Сохраняем позиции (RentalItems)
                         string qInsItem = @"INSERT INTO RentalItems (RentalID, VehicleID, HoursCount, Cost) 
                                             VALUES (@rid, @vid, @hours, @cost)";
 
@@ -261,19 +245,8 @@ namespace MotorcycleRental
                             }
                         }
 
-                        // Если режим редактирования, нужно сначала удалить старые позиции или обновить логику.
-                        // Для упрощения курсовой: Редактирование только статуса или дат. 
-                        // Если меняем состав - проще удалить и создать заново, но это сложно.
-                        // Оставим создание новым. Для редактирования существующего состава нужна более сложная логика.
-                        // В рамках курсовой часто допускается: Изменение только дат/статуса в режиме Edit, 
-                        // а изменение состава только при создании.
-                        // Но мы сделаем просто: Если EditMode, то сначала удалим старые items.
-
                         if (IsEditMode)
                         {
-                            // Внимание: В реальном приложении так делать опасно без транзакций и проверок.
-                            // Здесь мы просто добавляем новые. 
-                            // Для полноценного редактирования состава нужно удалять старые записи из RentalItems.
                             string qDelOld = "DELETE FROM RentalItems WHERE RentalID = @rid";
                             using (var cmd = new NpgsqlCommand(qDelOld, conn, trans))
                             {
@@ -281,7 +254,6 @@ namespace MotorcycleRental
                                 cmd.ExecuteNonQuery();
                             }
 
-                            // И обновляем заголовок
                             string qUpdRent = "UPDATE Rentals SET ClientID=@cid, EmployeeID=@eid, StartDate=@start, PlannedEndDate=@end, Status=@status WHERE RentalID=@rid";
                             using (var cmd = new NpgsqlCommand(qUpdRent, conn, trans))
                             {
@@ -294,10 +266,6 @@ namespace MotorcycleRental
                                 cmd.ExecuteNonQuery();
                             }
 
-                            // Вставляем новые items (цикл выше уже написан, но он внутри блока создания. 
-                            // Нужно вынести цикл сохранения Items отдельно или продублировать.
-                            // Для чистоты кода, давайте сохраним Items в отдельном методе или просто скопируем цикл.
-
                             foreach (DataRow row in _itemsTable.Rows)
                             {
                                 decimal cost = (decimal)row["Total"];
@@ -306,7 +274,7 @@ namespace MotorcycleRental
 
                                 using (var cmd = new NpgsqlCommand(qInsItem, conn, trans))
                                 {
-                                    cmd.Parameters.AddWithValue("@rid", RentalID); // Используем старый ID
+                                    cmd.Parameters.AddWithValue("@rid", RentalID);
                                     cmd.Parameters.AddWithValue("@vid", vid);
                                     cmd.Parameters.AddWithValue("@hours", hours);
                                     cmd.Parameters.AddWithValue("@cost", cost);
@@ -331,7 +299,6 @@ namespace MotorcycleRental
 
         private void btnCancel_Click(object sender, EventArgs e) => DialogResult = DialogResult.Cancel;
 
-        // Вспомогательные классы
         public class ComboBoxItem
         {
             public int Id { get; set; }

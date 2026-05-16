@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using Npgsql;
 using System.Configuration;
 
-namespace MotorcycleRental // ✅ Исправлено на общий namespace
+namespace MotorcycleRental
 {
     public partial class ClientsForm : Form
     {
@@ -62,11 +62,9 @@ namespace MotorcycleRental // ✅ Исправлено на общий namespace
             string columnName = dgvClients.Columns[e.ColumnIndex].DataPropertyName;
             if (string.IsNullOrEmpty(columnName)) return;
 
-            // Получаем реальное имя поля в БД
             string dbColumnName = GetSortDbFieldName(columnName);
             if (string.IsNullOrEmpty(dbColumnName)) return;
 
-            // Определяем направление сортировки
             string direction = "ASC";
             if (dgvClients.Tag?.ToString() == dbColumnName + "_ASC")
             {
@@ -78,7 +76,6 @@ namespace MotorcycleRental // ✅ Исправлено на общий namespace
                 dgvClients.Tag = dbColumnName + "_ASC";
             }
 
-            // Перезагружаем данные с сортировкой
             SortData(dbColumnName, direction);
         }
 
@@ -86,7 +83,6 @@ namespace MotorcycleRental // ✅ Исправлено на общий namespace
         {
             try
             {
-                // columnName уже содержит правильное имя поля БД (ClientID, FullName и т.д.)
                 string query = $"SELECT ClientID AS \"ID\", FullName AS \"ФИО\", Phone AS \"Телефон\", " +
                               "PassportSeries AS \"Серия паспорта\", PassportNumber AS \"Номер паспорта\", " +
                               $"Address AS \"Адрес\" FROM Clients ORDER BY {columnName} {direction}";
@@ -142,7 +138,6 @@ namespace MotorcycleRental // ✅ Исправлено на общий namespace
             }
         }
 
-        // ✅ Классический switch для C# 7.3
         private string GetDbFieldName(string displayName)
         {
             switch (displayName)
@@ -156,9 +151,6 @@ namespace MotorcycleRental // ✅ Исправлено на общий namespace
             }
         }
 
-        /// <summary>
-        /// Получение имени поля в БД для сортировки по отображаемому имени
-        /// </summary>
         private string GetSortDbFieldName(string displayName)
         {
             switch (displayName)
@@ -169,7 +161,7 @@ namespace MotorcycleRental // ✅ Исправлено на общий namespace
                 case "Серия паспорта": return "PassportSeries";
                 case "Номер паспорта": return "PassportNumber";
                 case "Адрес": return "Address";
-                default: return null; // Неизвестное поле
+                default: return null;
             }
         }
 

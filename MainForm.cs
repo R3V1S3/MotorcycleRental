@@ -74,12 +74,10 @@ namespace MotorcycleRental
 
         private void btnReports_Click(object sender, EventArgs e)
         {
-            // Открываем форму с выбором отчета или сразу первый отчет
             using (var form = new ReportsMenuForm())
             {
                 form.ShowDialog();
             }
         }
-
     }
 }

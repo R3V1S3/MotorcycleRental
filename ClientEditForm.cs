@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace MotorcycleRental // ✅ Исправлено
+namespace MotorcycleRental
 {
     public partial class ClientEditForm : Form
     {

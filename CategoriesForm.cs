@@ -15,7 +15,7 @@ namespace MotorcycleRental
         {
             InitializeComponent();
             LoadData();
-            SetupDataGridView(); // Добавляем настройку DataGridView
+            SetupDataGridView();
         }
 
         private void SetupDataGridView()
@@ -50,7 +50,6 @@ namespace MotorcycleRental
             }
         }
 
-        // ✅ Исправленный метод редактирования
         private void btnEdit_Click(object sender, EventArgs e)
         {
             if (dgvCategories.CurrentRow == null)
@@ -81,7 +80,6 @@ namespace MotorcycleRental
             }
         }
 
-        // ✅ Методы навигации
         private void btnPrev_Click(object sender, EventArgs e)
         {
             if (dgvCategories.CurrentRow?.Index > 0)
